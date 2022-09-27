@@ -1,0 +1,116 @@
+[[introduction-preparing]]
+= Preparing for the Workshop
+
+This workshop needs internet access to download all sorts of Maven artifacts, Docker images, and even pictures.
+Some of these artifacts are large, and because we have to share internet connexions at the workshop, it is better to download them before the workshop.
+Here are a few commands that you can execute before the workshop.
+
+== Download the workshop scaffolding
+
+icon:hand-point-right[role="red", size=2x] [red big]#Call to action#
+
+First, download the zip file  {github-raw}/dist/quarkus-super-heroes-workshop.zip, and unzip it wherever you want.
+This zip file contains _some_ of the code of the workshop, and you will need to complete it.
+
+In this workshop, you will be developing an application dealing with Super Heroes (and Super-Villains 🦹) as well as Quarkus extensions.
+The code will be separated into two different directories:
+
+[plantuml]
+----
+@startsalt
+{
+{
+T
+quarkus-workshop-super-heroes
++ super-heroes         | The entire Super Hero application
+}
+}
+@endsalt
+----
+
+=== Super Heroes Application
+
+Under the `super-heroes` directory you will find the entire Super Hero application spread throughout a set of subdirectories, each one containing a microservice or some tooling.
+The final structure will be the following:
+
+[plantuml]
+----
+@startsalt
+{
+{
+T
+quarkus-workshop-super-heroes
++ super-heroes
+++ event-statistics        | UI and application dealing with fight statistics (you will create it)
+++ infrastructure          | All the needed infrastructure (Postgres, Kafka...)
+++ kubernetes              | All the files required to deploy on Kubernetes
+++ load-super-heroes       | Stress tool loading heroes, villains and fights
+++ rest-fight              | REST API allowing super heroes to fight (you will create it)
+++ rest-hero               | Reactive REST API for CRUD operations on Heroes (you will create it)
+++ rest-villains            | REST API for CRUD operations on Villains (you will create it)
+++ ui-super-heroes         | Angular application so we can fight visually
+}
+}
+@endsalt
+----
+
+Most of these subdirectories are Maven projects and follow the Maven directory structure:
+
+[plantuml]
+----
+@startsalt
+{
+{
+T
+quarkus-workshop-super-heroes
++  super-heroes
+++ rest-villains
++++ src
+++++  main
++++++  docker
++++++  java
++++++  resources
+++++  test
++++++  java
+}
+}
+@endsalt
+----
+
+include::introduction-preparing-checking-ports.adoc[leveloffset=+1]
+
+== Warming up Maven
+
+Now that you have the initial structure in place, navigate to the root directory and run:
+
+icon:hand-point-right[role="red", size=2x] [red big]#Call to action#
+
+
+[source,shell]
+----
+mvn clean install
+----
+
+By running this command, it downloads all the required dependencies.
+
+include::introduction-preparing-warming-docker.adoc[leveloffset=+1]
+
+== The completed workshop
+
+You can find the completed code on {github-url}.
+So, if you are stuck, feel free to check the solution.
+
+In addition, you can {github-raw}/dist/quarkus-super-heroes-workshop-complete.zip[download] the full code of the workshop .
+
+To build the completed workshop, you need to run the following commands from the root project:
+
+[source, shell]
+----
+> mvn clean install -f super-heroes/extension-version
+> mvn clean install -Pcomplete
+----
+
+== Ready?
+
+After the prerequisites have been installed and the different components have been warmed up,  it's now time to write some code!
+

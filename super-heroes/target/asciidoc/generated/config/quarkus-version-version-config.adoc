@@ -1,0 +1,19 @@
+[.configuration-legend]
+icon:lock[title=Fixed at build time] Configuration property fixed at build time - All other configuration properties are overridable at runtime
+[.configuration-reference, cols="80,.^10,.^10"]
+|===
+
+h|[[quarkus-version-version-config_configuration]]link:#quarkus-version-version-config_configuration[Configuration property]
+
+h|Type
+h|Default
+
+a|icon:lock[title=Fixed at build time] [[quarkus-version-version-config_quarkus.version.enabled]]`link:#quarkus-version-version-config_quarkus.version.enabled[quarkus.version.enabled]`
+
+[.description]
+--
+Enables or disables the version printing at startup.
+--|boolean 
+|`false`
+
+|===

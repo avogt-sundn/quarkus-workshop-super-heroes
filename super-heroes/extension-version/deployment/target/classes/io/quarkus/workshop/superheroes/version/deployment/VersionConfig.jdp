@@ -1,0 +1,3 @@
+#
+#Tue Sep 27 14:56:16 CEST 2022
+io.quarkus.workshop.superheroes.version.deployment.VersionConfig.enabled=Enables or disables the version printing at startup.
