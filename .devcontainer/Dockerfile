@@ -42,3 +42,5 @@ RUN ARCH=$( if [ $(arch) = "aarch64" ]; then echo aarch64; else echo amd64; fi) 
 # BEGIN ------ install common utils: ping, dig, ncat
 RUN apt-get update && apt-get install -y iputils-ping dnsutils
 #   END ------ install common utils: ping, dig, ncat
+
+LABEL key="value"

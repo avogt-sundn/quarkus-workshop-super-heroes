@@ -57,5 +57,6 @@
 			"moby": true
 		},
 		"maven": "latest"
+	
 	}
 }

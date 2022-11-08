@@ -1,39 +1,28 @@
-version: "3"
+networks:
+  default:
+    name: docker-default-network
 
 services:
     database:
-        image: "postgres:13.4"
+        build:
+          context: db-init      
         container_name: "super-database"
         ports:
             - "5432:5432"
         environment:
-            POSTGRES_PASSWORD: password
-        volumes:
-            - ./db-init/initialize-databases.sql:/docker-entrypoint-initdb.d/init.sql
-
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: postgres
+        
     monitoring:
-        image: "prom/prometheus:v2.30.3"
+        build:
+          context: monitoring
         container_name: "super-visor"
         ports:
           - 9090:9090
-        volumes:
-          - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
-
-    zookeeper:
-        image: quay.io/strimzi/kafka:0.23.0-kafka-2.8.0
-        container_name: "zookeeper"
-        command: [
-                "sh", "-c",
-                "bin/zookeeper-server-start.sh config/zookeeper.properties"
-        ]
-        ports:
-            - "2181:2181"
-        environment:
-            LOG_DIR: /tmp/logs
 
     kafka:
-        hostname: kafka
-        image: docker.vectorized.io/vectorized/redpanda:v21.11.2
+        image: vectorized/redpanda:v22.1.7
         command:
         - redpanda
         - start
@@ -52,9 +41,21 @@ services:
     kafdrop:
         image: obsidiandynamics/kafdrop
         ports:
-            - "9092:9092"
+          - "9000:9000"
         environment:
-            LOG_DIR: "/tmp/logs"
-            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-            KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
-            KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+          KAFKA_BROKERCONNECT: "kafka:29092"
+          JVM_OPTS: "-Xms16M -Xmx48M -Xss180K -XX:-TieredCompilation -XX:+UseStringDeduplication -noverify"
+        labels:
+          - 'traefik.enable=true'
+          - 'traefik.http.routers.kafdrop.rule=Host(`kafdrop.localhost.direct`)'
+          - 'traefik.http.routers.kafdrop.entrypoints=web,websecure'
+        depends_on:
+          - "kafka"
+        
+    pgadmin:
+      image: dpage/pgadmin4
+      environment:
+        PGADMIN_DEFAULT_EMAIL: admin@admin.com
+        PGADMIN_DEFAULT_PASSWORD: root
+      ports:
+        - 9008:80
